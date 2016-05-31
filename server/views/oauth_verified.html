@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth verification completed!</title>
+
+</head>
+<body>
+<h1>OAuth Verification Completed</h1>
+<button>Close window</button>
+<script>
+    (function() {
+        'use strict';
+        function notifyOpener() {
+            window.opener.postMessage(JSON.stringify({
+                'auth_success': true
+            }), '*');
+            window.close();
+        }
+        var btn = document.querySelector('button');
+        btn.addEventListener('click', notifyOpener, false);
+//        setTimeout(notifyOpener, 3000);
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# SlimView context configs
+
+# server
+xliffPath: 'static/xliffs'
+#oauthEndpoint: 'http://localhost:8888/_el/ext/oauth2'
+#oauthConsumerId: 'UH1mGoOnSuqDiy38u657rxDVNMiqSIIy'
+#oauthConsumerSecret: 'ln7x_6tqVWnsJ8izcoLSuPOK3qxzNFaS'
+
+# localhost desktop
+oauthEndpoint: 'http://localhost:8888/_el/ext/oauth2'
+oauthConsumerId: 'gpD9N0HPgRSLKanek1N3XlWhL4wC9QxA'
+oauthConsumerSecret: 'kF-6O1JvlpeDtQC3i-GwnWItYrcgsPsP'

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <title>SlimView Vendor test app</title>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+        <link rel='stylesheet' href='https://code.getmdl.io/1.1.3/material.indigo-pink.min.css'>
+        <script async src='material.min.js'></script>
+        <script src='main.dart' type='application/dart'></script>
+        <script src='packages/browser/dart.js'></script>
+        <script>
+            var xliffFiles = {{&xliffFiles}};
+            var authorization = {{&authorization}};
+        </script>
+
+        <script>
+            function sourceWindowCmp(a, b) {
+                if('_window' in a.o && '_window' in b.o) {
+                    return a.o['_window'] === b.o['_window'];
+                } else {
+                    throw('Cannot compare 2 objects with sourceWindowCmp');
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <slim-app>Loading...</slim-app>
+    </body>
+</html>

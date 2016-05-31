@@ -1,0 +1,19 @@
+name: 'slim_vendor_app_server'
+version: 0.0.1
+description: Server side of slim vendor demo app
+author: Daniel Varga <dvarga@skawa.hu>
+homepage: https://www.easyling.com
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+dependencies:
+  browser: '>=0.10.0 <0.11.0'
+  js: any
+  forcemvc: any
+  xml: any
+  test: any
+  http: '>=0.11.3'
+  dirty:
+    git:
+      url: https://github.com/daniel-v/dart-dirty.git
+      ref: master
+    version: '>=0.1.5'
