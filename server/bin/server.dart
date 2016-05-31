@@ -97,7 +97,7 @@ class AppConfig {
   @Bean
   TokenStore getDb() {
     Dirty db = new Dirty('${path.normalize(path.join(
-        path.dirname(Platform.script.toFilePath(windows: true)), 'db/db.db'))}');
+        path.dirname(Platform.script.toFilePath(windows: Platform.isWindows)), 'db/db.db'))}');
     return new DirtyTokenStore(db);
   }
 }
@@ -105,7 +105,8 @@ class AppConfig {
 main() {
   print(path.dirname(Platform.script.toFilePath(windows: true)));
 
-  WebApplication app = new WebApplication(clientFiles: '../../client/build/web');
+  WebApplication app = new WebApplication(clientFiles: '../../client/build/web',
+      port: 8081);
 
   app.loadValues('../../app.yaml');
   ApplicationContext.bootstrap();
