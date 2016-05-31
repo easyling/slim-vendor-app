@@ -106,7 +106,7 @@ main() {
   print(path.dirname(Platform.script.toFilePath(windows: true)));
 
   WebApplication app = new WebApplication(clientFiles: '../../client/build/web',
-      port: 8081);
+      port: 8082);
 
   app.loadValues('../../app.yaml');
   ApplicationContext.bootstrap();
