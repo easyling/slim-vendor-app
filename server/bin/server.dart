@@ -107,8 +107,8 @@ main() {
 
   WebApplication app = new WebApplication(clientFiles: '../../client/build/web',
       port: 8082,
-      host: '0.0.0.0');
-
+      host: '0.0.0.0',
+      cors: false);
   app.loadValues('../../app.yaml');
   ApplicationContext.bootstrap();
   app.setupConsoleLog(Level.FINEST);

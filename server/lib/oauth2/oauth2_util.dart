@@ -4,20 +4,25 @@ class OAuth2Util {
 
   DocumentInfoEntity _documentInfo;
 
-  /// OAuth2 endpoint base
-  /// Can be configured in `app.yaml`
-  @Value('oauthEndpoint')
-  String oauthEndpoint;
+  @Value('defaultConfig')
+  String _defaultConfig;
 
-  /// Can be configured in `app.yaml`
-  @Value('oauthConsumerId')
-  String consumerId;
+  @Value('oauthConfig')
+  Map _oauthConfigs;
 
-  /// Can be configured in `app.yaml`
-  @Value('oauthConsumerSecret')
-  String consumerSecret;
+  String get usedConfig => _usedConfig ?? _defaultConfig;
+  void set usedConfig(String val) {
+    _usedConfig = val;
+  }
+  String _usedConfig;
 
-  Future<String> getAuthorizationUrl() async {
+  String get oauthEndpoint => _oauthConfigs[usedConfig]['endpoint'];
+
+  String get consumerId => _oauthConfigs[usedConfig]['consumerId'];
+
+  String get consumerSecret => _oauthConfigs[usedConfig]['consumerSecret'];
+
+  Future<String> getAuthorizationUrl(Uri requestUri) async {
     DocumentInfoEntity docInfo = await documentInfo;
     docInfo.authorizationEndpoint;
     Map<String, String> params = <String, String>{
@@ -25,7 +30,7 @@ class OAuth2Util {
       'response_type': 'code',
       'state': 'no-state-for-sample-code',
       'scope': 'slim-view',
-      'redirect_uri': 'http://localhost:8080/oauth/desktopverify'
+      'redirect_uri': _getRedirectUri(requestUri).toString()
     };
 
     Uri authUri = Uri.parse(docInfo.authorizationEndpoint)
@@ -34,12 +39,12 @@ class OAuth2Util {
   }
 
   Future<http.Response> requestForToken(bool isAccessToken,
-      {String code, String refreshToken}) async {
+      Uri requestUri, {String code, String refreshToken}) async {
     Map<String, String> params = <String, String>{
       'client_id': consumerId,
       'client_secret': consumerSecret,
       'grant_type': isAccessToken ? 'authorization_code' : 'refresh_token',
-      'redirect_uri': 'http://localhost:8080/oauth/desktopverify'
+      'redirect_uri': _getRedirectUri(requestUri).toString()
     };
     if (isAccessToken) {
       params['code'] = code;
@@ -49,6 +54,12 @@ class OAuth2Util {
     DocumentInfoEntity docInfo = await documentInfo;
     Uri accessTokenRequestUri = Uri.parse(docInfo.tokenEndpoint);
     return http.post(accessTokenRequestUri.toString(), body: params);
+  }
+
+  Uri _getRedirectUri(Uri requestUri) {
+    Uri redirectUri = new Uri(scheme: requestUri.scheme, host: requestUri.host, port: requestUri.port)
+        .resolve(usedConfig.contains('Desktop') ? '/oauth/desktopverify' : '/oauth/verify');
+    return redirectUri;
   }
 
   Future<Map> listProjects(String accessToken) {

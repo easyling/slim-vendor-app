@@ -2,11 +2,22 @@
 
 # server
 xliffPath: 'static/xliffs'
-#oauthEndpoint: 'http://localhost:8888/_el/ext/oauth2'
-#oauthConsumerId: 'UH1mGoOnSuqDiy38u657rxDVNMiqSIIy'
-#oauthConsumerSecret: 'ln7x_6tqVWnsJ8izcoLSuPOK3qxzNFaS'
 
-# localhost desktop
-oauthEndpoint: 'http://localhost:8888/_el/ext/oauth2'
-oauthConsumerId: 'gpD9N0HPgRSLKanek1N3XlWhL4wC9QxA'
-oauthConsumerSecret: 'kF-6O1JvlpeDtQC3i-GwnWItYrcgsPsP'
+defaultConfig: 'localhost'
+oauthConfig:
+  localhost:
+    endpoint: 'http://localhost:8888/_el/ext/oauth2'
+    consumerId: 'UH1mGoOnSuqDiy38u657rxDVNMiqSIIy'
+    consumerSecret: 'ln7x_6tqVWnsJ8izcoLSuPOK3qxzNFaS'
+  localhostDesktop:
+    endpoint: 'http://localhost:8888/_el/ext/oauth2'
+    consumerId: 'gpD9N0HPgRSLKanek1N3XlWhL4wC9QxA'
+    consumerSecret: 'kF-6O1JvlpeDtQC3i-GwnWItYrcgsPsP'
+  dev:
+    endpoint: 'http://memoq-dot-dev-easyling.appspot.com/_el/ext/oauth2'
+    consumerId: 'W6giZisDzHAirkhfAdKLPai2KrmUbG3g'
+    consumerSecret: 'efQrZcluoJr0X1uRJ0rUFntaXLPV5mY4'
+  devDesktop:
+    endpoint: 'http://memoq-dot-dev-easyling.appspot.com/_el/ext/oauth2'
+    consumerId: 'QBCmsc9pRffGWZn73qWIdVWimiTsqDEG'
+    consumerSecret: 'fHP3tRhXqFkfJ8xb1p5FIaFFMkIXEbuS'

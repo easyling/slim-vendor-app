@@ -5,9 +5,9 @@ part of slim;
 class OAuth2Controller {
 
   @RequestMapping(value: 'start', method: RequestMethod.GET)
-  Future<String> startAuth(HttpSession session) async {
+  Future<String> startAuth(ForceRequest req) async {
     OAuth2Util util = ApplicationContext.getBeanByType(OAuth2Util);
-    String url = await util.getAuthorizationUrl();
+    String url = await util.getAuthorizationUrl(req.request.requestedUri);
     return 'redirect:$url';
   }
 
@@ -16,7 +16,7 @@ class OAuth2Controller {
       @RequestParam(value: 'code', required: true) String code,
       @RequestParam(value: 'state', required: true) String state) async {
     OAuth2Util util = ApplicationContext.getBeanByType(OAuth2Util);
-    http.Response tokenResponse = await util.requestForToken(true, code: code);
+    http.Response tokenResponse = await util.requestForToken(true, req.request.requestedUri, code: code);
     Map response = JSON.decode(tokenResponse.body);
     Logger.root.finest("Response: ${tokenResponse.body}");
     storeTokens(response);
@@ -28,7 +28,7 @@ class OAuth2Controller {
       @RequestParam(value: 'code', required: true) String code,
       @RequestParam(value: 'state', required: true) String state) async {
     OAuth2Util util = ApplicationContext.getBeanByType(OAuth2Util);
-    http.Response tokenResponse = await util.requestForToken(true, code: code);
+    http.Response tokenResponse = await util.requestForToken(true, req.request.requestedUri, code: code);
     Map response = JSON.decode(tokenResponse.body);
     Logger.root.finest("Response: ${tokenResponse.body}");
     storeTokens(response);
@@ -56,13 +56,13 @@ class OAuth2Controller {
   }
 
   @RequestMapping(value: 'refresh', method: RequestMethod.GET)
-  Future<Map> refreshToken() async {
+  Future<Map> refreshToken(ForceRequest req) async {
     TokenStore tokenStore = ApplicationContext.getBeanByType(TokenStore);
     OAuth2Util util = ApplicationContext.getBeanByType(OAuth2Util);
 
     String refresh = await tokenStore.getRefreshToken();
     http.Response tokenResponse = await util.requestForToken(
-        false, refreshToken: refresh);
+        false, req.request.requestedUri, refreshToken: refresh);
     Map response = JSON.decode(tokenResponse.body);
     storeTokens(response, tokenStore);
     return response;
