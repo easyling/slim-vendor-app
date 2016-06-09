@@ -6,3 +6,4 @@ homepage: https://www.easyling.com
 dev_dependencies:
   test: "0.12.13+4"
   webdriver: any
+  logging: ">=0.11.3"
