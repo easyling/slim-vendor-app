@@ -24,3 +24,4 @@
 test/captures/**.png
 test/captures/**.txt
 server/static/xliffs/*.*
+server/bin/db/
