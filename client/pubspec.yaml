@@ -1,7 +1,7 @@
 name: 'slim_vendor_app_client'
 version: 0.0.1
 description: Client side of SlimView demo app
-author: Daniel Varga <dvarga@skawa.hu>
+author: Daniel Varga-Hali <dvarga@skawa.hu>
 homepage: https://www.easyling.com
 environment:
   sdk: '>=1.0.0 <2.0.0'
@@ -11,10 +11,10 @@ dependencies:
   js: any
   slim_vendor_app_server:
     path: '../server'
-  slim_vendor:
+  dart_slimlib:
     git:
-      url: git@gitlab.skawa.hu:easyling/slim-vendor.git
-      ref: master
+      url: https://github.com/easyling/dart_slimlib
+      ref: v0.0.2
 transformers:
 - angular2:
     entry_points: web/main.dart

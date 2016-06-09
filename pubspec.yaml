@@ -1,8 +1,8 @@
 name: 'slim_vendor_app'
 version: 0.0.1
-description: SSlimView test and demo application
+description: SlimView test and demo application
 author: Daniel Varga <dvarga@skawa.hu>
 homepage: https://www.easyling.com
 dev_dependencies:
-  test: any
+  test: "0.12.13+4"
   webdriver: any

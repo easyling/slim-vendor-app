@@ -16,7 +16,7 @@
                         <i class="material-icons">forward</i>
                     </button>
                 </td>
-                <td class="target" style="width: 50%;" contenteditable="true" (blur)="blur()">
+                <td class="target" style="width: 50%;" contenteditable="true" (input)="change($event)">
                     {{segment.target}}
                 </td>
             </tr>

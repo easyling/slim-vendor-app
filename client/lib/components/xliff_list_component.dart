@@ -10,6 +10,7 @@ class XliffListComponent {
   final XliffFileService fileService;
   final SlimApp app;
   final AuthorizationInfo authorizationInfo;
+  final SlimViewChannelService channelService;
 
   XliffDescriptorEntity selectedExport;
 
@@ -17,7 +18,7 @@ class XliffListComponent {
 
   String endpointOrigin = 'http://localhost:8888';
 
-  XliffListComponent(XliffFileService fileService, this.app, this.authorizationInfo)
+  XliffListComponent(XliffFileService fileService, this.app, this.authorizationInfo, this.channelService)
       : fileService = fileService;
 
   void clearTokens() {
@@ -62,46 +63,66 @@ class XliffListComponent {
         .resolve('/_sd/slim/${app.selectedExport.projectCode}') //
         .replace(queryParameters: parameters);
 
-    WindowBase openedWindow = window.open(
-        slimUri.toString(), 'Website Preview', 'height=800px,width=1000px,modal=yes,alwaysRaised=yes');
-    print("${identityHashCode(openedWindow)}");
+    channelService.config = new SlimView.Config()
+      ..endpoint = endpointOrigin
+      ..previewPage = app.selectedSegment.page
+      ..targetLanguage = app.selectedExport.targetLocale
+      ..projectCode = app.selectedExport.projectCode
+      ..token = emulateDesktop ? null : authorizationInfo.token;
+    if (emulateDesktop) {
+      channelService.config.extra = SlimView.box(<String, String>{ 'em' : '1', 'o': '1'});
+    }
+
+
+    channelService.channel = new SlimView.Channel(channelService.config)
+      ..onError(SlimView.allowInterop((msg) {
+        Map message = SlimView.unboxMessage(msg);
+        if (message['command'] == 'invalidAccessToken') {
+          print('invalid token');
+        }
+      }))
+      ..onMessage(SlimView.allowInterop((msg) {
+        Map message = SlimView.unboxMessage(msg);
+        print("Message: ${message}");
+        switch (message['command']) {
+          case 'slimViewReady':
+            app.entryKeyList = message['parameters']['keysFoundOnPage'].map((String k) => new SegmentKey(k)).toList();
+            app.tmKeyList = message['parameters']['tmKeysFoundOnPage'].map((String k) => new SegmentKey(k)).toList();
+            channelService.channel.enableHighlighting();
+            sendSelectedEntryInfo(channelService.channel);
+            break;
+          case 'viewChanged':
+            if (!app.selectSegmentByKey(new SegmentKey(message['parameters']['highlightedEntryId']['uniqueKey'])))
+              app.selectSegmentByKey(new SegmentKey(message['parameters']['highlightedEntryId']['nonUniqueKey']));
+            break;
+        }
+      }));
+
     if (emulateDesktop) {
       // emulation specific code - unrelated to channel
       window.onMessage.listen((MessageEvent ev) {
         if (ev.origin == slimUri.origin) {
           if (ev.data == 'emulation_started') {
-            openedWindow.postMessage(JSON.encode({ 'command': 'setAccessToken', 'token': authorizationInfo.token}),
-                slimUri.origin);
+            new JsObject.fromBrowserObject(channelService.channel.window)
+                .callMethod(
+                'postMessage', [
+              JSON.encode({ 'command': 'setAccessToken', 'token': authorizationInfo.token}),
+              slimUri.origin
+            ]);
           }
         }
       });
-      slimView.loadInNewWindow(app.getViewId(), openedWindow, slimUri.origin, ignoreToken: true);
+      channelService.channel.openInNewWindow();
     } else {
-      slimView.loadInNewWindow(app.getViewId(), openedWindow, slimUri.origin);
+      channelService.channel.openInNewWindow();
     }
-    slimView.slimViewChannel.registerCallback(slimView.SlimCommand.READY, (Map data) {
-      app.entryKeyList = data['parameters']['keysFoundOnPage'].map((String k) => new SegmentKey(k)).toList();
-      app.tmKeyList = data['parameters']['tmKeysFoundOnPage'].map((String k) => new SegmentKey(k)).toList();
-      print(app.entryKeyList);
-      print(app.tmKeyList);
-      slimView.slimViewChannel.post(slimView.SlimCommand.VIEW, <String, dynamic>{
-        "mode": "highlight"
-      });
-      sendSelectedEntryInfo();
-    });
-    slimView.slimViewChannel.registerCallback(slimView.SlimCommand.VIEW_CHANGED, (Map data) {
-      if (!app.selectSegmentByKey(new SegmentKey(data['parameters']['highlightedEntryId']['uniqueKey'])))
-        app.selectSegmentByKey(new SegmentKey(data['parameters']['highlightedEntryId']['nonUniqueKey']));
-    });
     app.onSelectionChange.listen((_) {
-      sendSelectedEntryInfo();
+      sendSelectedEntryInfo(channelService.channel);
     });
   }
 
-  void sendSelectedEntryInfo() {
-    slimView.slimViewChannel.post(slimView.SlimCommand.VIEW, <String, dynamic>{
-      "highlightedEntry": app.selectedSegment.key
-    });
+  void sendSelectedEntryInfo(SlimView.Channel channel) {
+    channel.highlight(app.selectedSegment.key);
   }
 
   @HostListener('change', const ['\$event'])

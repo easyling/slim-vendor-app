@@ -4,11 +4,11 @@ import 'package:angular2/core.dart';
 import 'package:slim_vendor_app_client/services.dart';
 import 'package:slim_vendor_app_client/slim_app.dart';
 import 'package:slim_vendor_app_server/entities.dart' show XliffDescriptorEntity, SegmentEntity;
-//import 'package:slim_vendor_app_client/mld_interface.dart';
-import 'package:slim_vendor/slim_vendor.dart' as slimView;
+import 'package:dart_slimlib/dart_slimlib.dart' as SlimView;
 import 'dart:html';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js';
 
 
 part 'components/app_component.dart';

@@ -12,7 +12,9 @@ class EntryListComponent {
 
   final SlimApp app;
 
-  EntryListComponent(this.app);
+  final SlimViewChannelService channelService;
+
+  EntryListComponent(this.app, this.channelService);
 
   bool presentInPreview(SegmentEntity segment) {
     return app.hasEntryKey(new SegmentKey(segment.key));
@@ -41,8 +43,19 @@ class EntryListComponent {
     return new SegmentKey(segment.key).equals(app.selectedSegment.key);
   }
 
-  void blur() {
-    // TODO: send
+
+  void change(Event ev) {
+    if (_bounceTimer != null) {
+      _bounceTimer.cancel();
+      _bounceTimer = null;
+    }
+    String targetValue = (ev.target as Node).text?.trim();
+    _bounceTimer = new Timer(new Duration(milliseconds: 250), () {
+      print("Subbmitting: ${targetValue}");
+      channelService.channel.translate(app.selectedSegment.key, targetValue, false);
+    });
   }
+
+  Timer _bounceTimer;
 }
 
