@@ -21,7 +21,6 @@
 *.ipr
 *.iws
 
-test/captures/**.png
-test/captures/**.txt
+test/captures/
 server/static/xliffs/*.*
 server/bin/db/
