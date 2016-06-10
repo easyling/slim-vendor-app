@@ -19,10 +19,12 @@ class XliffListComponent {
 
   bool get hasSelectedFile => selectedExport != null;
 
-  String get endpointOrigin => slimEndpoint;
+  String endpointOrigin;
 
   XliffListComponent(XliffFileService fileService, this.app, this.authorizationInfo, this.channelService)
-      : fileService = fileService;
+      : fileService = fileService {
+    sanitizeEndpoint();
+  }
 
   void clearTokens() {
     window.location.href = '/clearTokens';
@@ -52,6 +54,8 @@ class XliffListComponent {
       return;
     }
 
+    sanitizeEndpoint();
+
     Map<String, String> parameters = <String, String>{
       'targetLanguage': app.selectedExport.targetLocale,
       'url': app.selectedSegment.page,
@@ -63,8 +67,9 @@ class XliffListComponent {
     }
 
     Uri slimUri = Uri.parse(endpointOrigin)
-        .resolve('/_sd/slim/${app.selectedExport.projectCode}') //
+        .resolve('/${app.selectedExport.projectCode}') //
         .replace(queryParameters: parameters);
+    print("SlimURI : ${slimUri.toString()}");
 
     channelService.config = new SlimView.Config()
       ..endpoint = endpointOrigin
@@ -122,6 +127,16 @@ class XliffListComponent {
     app.onSelectionChange.listen((_) {
       sendSelectedEntryInfo(channelService.channel);
     });
+  }
+
+  void sanitizeEndpoint() {
+    String defaultEndpointConfig = slimEndpoint;
+    if (defaultEndpointConfig.contains('localhost')) {
+      endpointOrigin = Uri.parse(defaultEndpointConfig).resolve('/_sd/slim/').toString();
+    } else {
+      Uri temp = Uri.parse(defaultEndpointConfig);
+      endpointOrigin = temp.replace(host: 'slim-dot-${temp.host}', path: '/').toString();
+    }
   }
 
   void sendSelectedEntryInfo(SlimView.Channel channel) {
