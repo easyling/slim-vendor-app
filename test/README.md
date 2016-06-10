@@ -14,8 +14,13 @@ There are some runtime requirements to running the test.
 
 ## Running the Test Application
 
-- Configure endpoints and consumer information in: `server/app.yaml`
-- Run the test server: `run.sh` or `run.bat`
+1. Configure endpoints and consumer information in: `server/app.yaml`
+2. Run the test server: `debug.sh` or `debug.bat`
+
+When running tests on a dev machine, defaultConfig should be set to `localhost` in app.yaml
+```yaml
+defaultConfig: 'localhost'
+```
 
 It is a prerequisite of the enviroment to have dart installed. [Dart website](https://www.dartlang.org/downloads/)
 
@@ -26,6 +31,17 @@ These are the default settings of selenium server.
 ```
 pub get #updates package dependencies
 pub run test test/slim_test.dart -r compact -p vm
+```
+
+By default, the server will bind to `127.0.0.1:8082` and the test environment will assume that
+you want to run tests against that endpoint. To change it:
+
+```bash
+(export VENDOR_ENDPOINT=http://someotherendpoint:9876 && pub run test test/slim_test.dart -r compact -p vm)
+```
+and on Windows
+```
+SET VENDOR_ENDPOINT=http://someotherendpoint:9876 && pub run test test\slim_test.dart -r compact -p vm
 ```
 
 ### CI Integration
