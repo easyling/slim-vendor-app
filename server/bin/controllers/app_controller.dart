@@ -10,8 +10,11 @@ class AppController {
       store.clearAll();
     }
 
+    OAuth2Util util = ApplicationContext.getBeanByType(OAuth2Util);
+    Uri endpoint = Uri.parse(util.oauthEndpoint).replace(path: '/_sd/slim');
     model.addAttribute('xliffFiles', JSON.encode(xliffFiles));
     model.addAttribute('authorization', JSON.encode(await getAuthorizationStatus()));
+    model.addAttribute('slimEndpoint', JSON.encode(endpoint.toString()));
     return 'index';
   }
 
@@ -34,10 +37,10 @@ class AppController {
     Directory xliffDir = new Directory(xliffPath);
     return xliffDir.listSync(followLinks: false)
         .where((FileSystemEntity entity) => FileSystemEntity.isFileSync(entity.path))
-        .map((FileSystemEntity entity) => path.basename(entity.path))
+        .map((FileSystemEntity entity) => p.basename(entity.path))
         .toList();
   }
 
-  String get xliffPath => path.absolute(
-      path.normalize('./${ApplicationContext.getValue('xliffPath')}'));
+  String get xliffPath => p.absolute(
+      p.normalize('./${ApplicationContext.getValue('xliffPath')}'));
 }

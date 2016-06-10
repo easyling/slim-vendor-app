@@ -1,5 +1,8 @@
 part of slim_vendor_app_client.components;
 
+@JS('slimEndpoint')
+external String get slimEndpoint;
+
 @Component(selector: 'xliff-list',
     templateUrl: 'components/templates/xliff-list.html',
     styleUrls: const ['components/styles/xliff-list.css'],
@@ -16,7 +19,7 @@ class XliffListComponent {
 
   bool get hasSelectedFile => selectedExport != null;
 
-  String endpointOrigin = 'http://localhost:8888';
+  String get endpointOrigin => slimEndpoint;
 
   XliffListComponent(XliffFileService fileService, this.app, this.authorizationInfo, this.channelService)
       : fileService = fileService;
@@ -143,6 +146,4 @@ class XliffListComponent {
   }
 
   bool emulateDesktop = false;
-
-  static const String slimBase = 'http://localhost:8888/_sd/slim/';
 }

@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:forcemvc/force_mvc.dart';
 import 'package:wired/wired.dart';
 
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:slim_vendor_app_server/xliff.dart' as xliff;
 import 'package:slim_vendor_app_server/oauth2.dart';
 import 'package:http/http.dart' as http;
@@ -96,14 +96,14 @@ class AppConfig {
 
   @Bean
   TokenStore getDb() {
-    Dirty db = new Dirty('${path.normalize(path.join(
-        path.dirname(Platform.script.toFilePath(windows: Platform.isWindows)), 'db/db.db'))}');
+    Dirty db = new Dirty('${p.normalize(p.join(
+        p.dirname(Platform.script.toFilePath(windows: Platform.isWindows)), 'db/db.db'))}');
     return new DirtyTokenStore(db);
   }
 }
 
 main() {
-  print(path.dirname(Platform.script.toFilePath(windows: true)));
+  print(p.dirname(Platform.script.toFilePath(windows: true)));
 
   WebApplication app = new WebApplication(clientFiles: '../../client/build/web',
       port: 8082,

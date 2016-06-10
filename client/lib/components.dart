@@ -1,3 +1,4 @@
+@JS()
 library slim_vendor_app_client.components;
 
 import 'package:angular2/core.dart';
@@ -9,6 +10,7 @@ import 'dart:html';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:js';
+import 'package:js/js.dart';
 
 
 part 'components/app_component.dart';

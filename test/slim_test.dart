@@ -21,6 +21,7 @@ Logger logger = new Logger('SlimTests');
 QueryWebDriver driver;
 
 main() async {
+  logger.info("Test endpoint: ${vendorEndpoint}");
   Map capabilities = Capabilities.chrome
     ..addAll({
       Capabilities.loggingPrefs: {LogType.performance: LogLevel.severe},
