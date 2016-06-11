@@ -15,7 +15,11 @@ dependencies:
     git:
       url: https://github.com/easyling/dart_slimlib
       ref: v0.0.2
+  less_dart: '>=0.3.4'
 transformers:
+- less_dart:
+    entry_points:
+      - lib/components/*/*.less
 - angular2:
     entry_points: web/main.dart
     platform_directives:

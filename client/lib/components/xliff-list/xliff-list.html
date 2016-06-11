@@ -1,14 +1,13 @@
 <div class="mdl-grid">
-    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col" style="min-height: initial; overflow: visible;">
+    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col env-config">
         <div [rollup]="rollupTarget"
              [rollupCondition]="hasSelectedFile"
-             class="mdl-card__title"
-             style="display: flex;">
+             class="mdl-card__title">
             <i class="material-icons">insert_drive_file</i>
-            <h2 class="mdl-card__title-text" style="padding-left: 16px">
+            <h2 class="mdl-card__title-text">
                 Environment configuration
             </h2>
-            <span style="flex: 1; text-align: right;"></span>
+            <span class="spacer"></span>
             <i [hidden]="!rollupTarget.hidden"
                class="material-icons"
                id="rollup">arrow_drop_up</i>
@@ -18,19 +17,16 @@
             <span class="mdl-tooltip" for="rollup">Roll up details</span>
             <span class="mdl-tooltip" for="rolldown">Roll down details</span>
         </div>
-        <div #rollupTarget
-             class="mdl-card__supporting-text"
-             style="padding-left: 56px">
+        <div #rollupTarget class="mdl-card__supporting-text">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="endpoint-origin" #origin [value]="endpointOrigin" (change)="endpointOrigin=origin.value">
                 <label class="mdl-textfield__label" for="endpoint-origin">SlimView's endpoint origin...</label>
             </div>
-            <p class="mdl-color-text--primary" style="font-size: 16px; color: rgba(0,0,0,0.54); line-height: 48px; margin: 0;">Emulate integration</p>
+            <p class="mdl-color-text--primary">Emulate integration</p>
             <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect"
                    [class.is-disabled]="hasSelectedFile"
                    for="desktop-emulation"
-                   id="desktop-emulation-label"
-                   style="width: auto; margin-bottom: 20px;">
+                   id="desktop-emulation-label">
                 <input type="checkbox"
                        name="desktopEmulation"
                        id="desktop-emulation"
@@ -41,9 +37,8 @@
                 <span class="mdl-switch__label">Desktop Client</span>
             </label>
             <span class="mdl-tooltip" for="desktop-emulation-label">Application will behave as though it was a desktop application</span>
-            <p class="mdl-color-text--primary" style="font-size: 16px; color: rgba(0,0,0,0.54); line-height: 48px; margin: 0;">Select one of the available exports</p>
+            <p class="mdl-color-text--primary">Select one of the available exports</p>
             <label class="file mdl-radio mdl-js-radio mdl-js-ripple-effect"
-                   style="display: block"
                    [class.is-disabled]="hasSelectedFile"
                    *ngFor="let export of fileService.files">
                 <input type="radio"
@@ -58,13 +53,13 @@
 </div>
 <div class="mdl-grid" [hidden]="!hasSelectedFile">
     <div class="mdl-cell mdl-cell--6-col">
-        <div class="mdl-card mdl-shadow--4dp" style="width: 100%; overflow: visible; min-height: initial;">
+        <div class="mdl-card mdl-shadow--4dp export-details">
             <div [rollup]="xliffTarget"
                  [rollupCondition]="app.selectedSegment != null"
                  class="mdl-card__title">
                 <i class="material-icons">dehaze</i>
-                <h2 class="mdl-card__title-text" style="padding-left: 16px">Export details</h2>
-                <span style="flex: 1; text-align: right;"></span>
+                <h2 class="mdl-card__title-text">Export details</h2>
+                <span class="spacer"></span>
                 <i [hidden]="!xliffTarget.hidden"
                    class="material-icons"
                    id="xliff-up">arrow_drop_up</i>
@@ -75,7 +70,7 @@
                 <span class="mdl-tooltip" for="xliff-down">Roll down details</span>
             </div>
             <div #xliffTarget>
-                <div class="mdl-card__supporting-text" style="padding-left: 56px">
+                <div class="mdl-card__supporting-text">
                     <xliff-detail [export]="app.selectedExport"></xliff-detail>
                 </div>
             </div>
@@ -83,14 +78,13 @@
     </div>
     <div class="mdl-cell mdl-cell--6-col">
         <div class="mdl-card mdl-shadow--4dp"
-             id="auth-status-card"
-             style="width: 100%; overflow: visible; min-height: initial;">
+             id="auth-status-card">
             <div [rollup]="tokenTarget"
                  [rollupCondition]="app.selectedSegment != null"
                  class="mdl-card__title">
                 <i class="material-icons">security</i>
-                <h2 class="mdl-card__title-text" style="padding-left: 16px">Authorization status</h2>
-                <span style="flex: 1; text-align: right;"></span>
+                <h2 class="mdl-card__title-text">Authorization status</h2>
+                <span class="spacer" ></span>
                 <i [hidden]="!tokenTarget.hidden"
                    class="material-icons"
                    id="token-up">arrow_drop_up</i>
@@ -101,12 +95,12 @@
                 <span class="mdl-tooltip" for="token-down">Roll down details</span>
             </div>
             <div #tokenTarget>
-                <div class="mdl-card__supporting-text" style="padding-left: 56px">
+                <div class="mdl-card__supporting-text">
                     <div class="has-token">Has access token: {{authorizationInfo.hasAccessToken}}</div>
                     <div class="token-validity">Access token is valid: {{authorizationInfo.tokenIsValid}}</div>
                     <div class="token-expired">Token has expired: {{authorizationInfo.tokenHasExpired}}</div>
                 </div>
-                <div class="mdl-card__actions mdl-card--border" style="text-align: right;">
+                <div class="mdl-card__actions mdl-card--border align-right">
                     <div (click)="clearTokens()"
                          class="mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect"
                          id="clear-tokens">
