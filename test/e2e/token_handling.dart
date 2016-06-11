@@ -10,9 +10,9 @@ Future<Iterable<QueryWebElement>> selectExport([int which]) async {
 
 Future loginUsingEasylingMethod() async {
   QueryWebElement emailInput = await driver.query('#email');
-  await emailInput.sendKeys('username@domain.com');
+  await emailInput.sendKeys('test@easyling.com');
   QueryWebElement passInput = await driver.query('#password');
-  await passInput.sendKeys('cicamica');
+  await passInput.sendKeys('sq8Tj9Bd');
   QueryWebElement loginBtn = await driver.query('#login');
   return loginBtn.click();
 }
