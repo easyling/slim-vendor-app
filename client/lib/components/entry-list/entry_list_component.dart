@@ -2,8 +2,8 @@ part of slim_vendor_app_client.components;
 
 @Component(
     selector: 'entry-list',
-    templateUrl: 'components/templates/entry-list.html',
-    styleUrls: const ['components/styles/entry-list.css']
+    templateUrl: 'components/entry-list/entry-list.html',
+    styleUrls: const ['components/entry-list/entry-list.css']
 )
 class EntryListComponent {
 

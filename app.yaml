@@ -3,7 +3,7 @@
 # server
 xliffPath: 'static/xliffs'
 
-defaultConfig: 'localhost'
+defaultConfig: 'dev'
 oauthConfig:
   localhost:
     endpoint: 'http://localhost:8888/_el/ext/oauth2'

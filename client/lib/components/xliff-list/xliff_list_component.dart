@@ -4,8 +4,8 @@ part of slim_vendor_app_client.components;
 external String get slimEndpoint;
 
 @Component(selector: 'xliff-list',
-    templateUrl: 'components/templates/xliff-list.html',
-    styleUrls: const ['components/styles/xliff-list.css'],
+    templateUrl: 'components/xliff-list/xliff-list.html',
+    styleUrls: const ['components/xliff-list/xliff-list.css'],
     providers: const [xliffFileServiceProvider, authorizationInfoProvider],
     directives: const [XliffDetailComponent, Rollup])
 class XliffListComponent {

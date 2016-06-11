@@ -8,6 +8,24 @@ Future<Iterable<QueryWebElement>> selectExport([int which]) async {
   });
 }
 
+Future loginUsingEasylingMethod() async {
+  QueryWebElement emailInput = await driver.query('#email');
+  await emailInput.sendKeys('username@domain.com');
+  QueryWebElement passInput = await driver.query('#password');
+  await passInput.sendKeys('cicamica');
+  QueryWebElement loginBtn = await driver.query('#login');
+  return loginBtn.click();
+}
+
+Future loginToLocalhost() async {
+  QueryWebElement loginBtn = await driver.query('#btn-login');
+  await loginBtn.click();
+}
+
+Future<bool> isLocalhost() {
+  return driver.currentUrl.then((String url) => url.startsWith('http://localhost'));
+}
+
 void runTokenTest() {
   abortableGroup('Token ', () {
     setUpAll(() {
@@ -43,17 +61,29 @@ void runTokenTest() {
         List<Window> windows = await driver.windows.toList();
         expect(windows, hasLength(2));
         await driver.switchTo.window(windows.last);
-        expect(driver.title, completion(contains('Easyling')));
         expect(driver.currentUrl, completion(contains('?continue')));
       });
 
-      test('can provide username/passowrd to log in', () async {
-        QueryWebElement googleButton = await driver
-            .queryAll('.federatedLoginMethod')
-            .last;
-        await googleButton.click();
-        QueryWebElement loginBtn = await driver.query('#btn-login');
-        await loginBtn.click();
+      test('can select login method', () async {
+        QueryWebElement loginButton;
+        if (await isLocalhost()){
+          loginButton = await driver
+              .queryAll('.federatedLoginMethod')
+              .last;
+        } else {
+          loginButton = await driver
+              .queryAll('.federatedLoginMethod')
+              .first;
+        }
+        await loginButton.click();
+      });
+
+      test('can provide username and pass', () async {
+        if(await isLocalhost()) {
+          await loginToLocalhost();
+        } else {
+          await loginUsingEasylingMethod();
+        }
       });
 
       test('can select projects to allow access to', () async {

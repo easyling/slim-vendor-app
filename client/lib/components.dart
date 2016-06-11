@@ -13,8 +13,9 @@ import 'dart:js';
 import 'package:js/js.dart';
 
 
-part 'components/app_component.dart';
-part 'components/rollup_directive.dart';
-part 'components/xliff_list_component.dart';
-part 'components/xliff_detail_component.dart';
-part 'components/entry_list_component.dart';
+part 'directives/rollup_directive.dart';
+
+part 'components/app/app_component.dart';
+part 'components/xliff-list/xliff_list_component.dart';
+part 'components/xliff-detail/xliff_detail_component.dart';
+part 'components/entry-list/entry_list_component.dart';

@@ -2,7 +2,7 @@ part of slim_vendor_app_client.components;
 
 @Component(
     selector: 'xliff-detail',
-    templateUrl: 'components/templates/xliff-detail.html'
+    templateUrl: 'components/xliff-detail/xliff-detail.html'
 )
 class XliffDetailComponent {
   @Input()
