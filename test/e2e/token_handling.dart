@@ -67,10 +67,12 @@ void runTokenTest() {
       test('can select login method', () async {
         QueryWebElement loginButton;
         if (await isLocalhost()){
+          logger.info('Selecting Google login method');
           loginButton = await driver
               .queryAll('.federatedLoginMethod')
               .last;
         } else {
+          logger.info('Selecting EL login method');
           loginButton = await driver
               .queryAll('.federatedLoginMethod')
               .first;
@@ -87,6 +89,7 @@ void runTokenTest() {
       });
 
       test('can select projects to allow access to', () async {
+        logger.info('Current url: ${await driver.currentUrl}');
         List<QueryWebElement> checkBoxes = await driver.queryAll('.skinnedCheck').toList();
         expect(checkBoxes, hasLength(greaterThan(1)));
         expect(checkBoxes.first.attributes['checked'], completion(isNotNull));
