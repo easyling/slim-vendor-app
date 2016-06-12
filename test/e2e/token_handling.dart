@@ -66,7 +66,7 @@ void runTokenTest() {
 
       test('can select login method', () async {
         QueryWebElement loginButton;
-        if (await isLocalhost()){
+        if (await isLocalhost()) {
           logger.info('Selecting Google login method');
           loginButton = await driver
               .queryAll('.federatedLoginMethod')
@@ -81,15 +81,19 @@ void runTokenTest() {
       });
 
       test('can provide username and pass', () async {
-        if(await isLocalhost()) {
+        if (await isLocalhost()) {
           await loginToLocalhost();
         } else {
           await loginUsingEasylingMethod();
         }
       });
-
       test('can select projects to allow access to', () async {
-        logger.info('Current url: ${await driver.currentUrl}');
+        // wait for all the login redirects to finish before looking for next thing to do
+        await waitFor(() async {
+          return Uri
+              .parse(await driver.currentUrl)
+              .path;
+        }, matcher: startsWith('/_el/ext/oauth2/resumeAuthorization'));
         List<QueryWebElement> checkBoxes = await driver.queryAll('.skinnedCheck').toList();
         expect(checkBoxes, hasLength(greaterThan(1)));
         expect(checkBoxes.first.attributes['checked'], completion(isNotNull));
