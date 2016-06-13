@@ -2,8 +2,8 @@ part of slim_vendor_app.test;
 
 Future<Iterable<QueryWebElement>> selectExport([int which]) async {
   return driver.query('xliff-list').then((QueryWebElement list) async {
-    Iterable<QueryWebElement> labels = await list.queryAll('label').toList();
-    await labels.elementAt(which ?? labels.length - 1).click();
+    Iterable<QueryWebElement> labels = await list.queryAll('label.file').toList();
+    await labels.elementAt(which ?? 0).click();
     return labels;
   });
 }
