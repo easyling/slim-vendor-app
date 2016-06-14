@@ -110,6 +110,7 @@ void runTokenTest() {
 
       test('can close window and finish process', () async {
         (await driver.query('button')).click();
+        await new Clock().sleep(new Duration(seconds: 1));
         Iterable<Window> windows = await driver.windows.toList();
         expect(windows, hasLength(1));
         await driver.switchTo.window(windows.first);
